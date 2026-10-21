@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#DCE9FB"/>
+    </linearGradient>
+    <linearGradient id="heart" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F4F8FF" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#D3E3FA" stop-opacity="0.95"/>
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" fill="url(#bg)"/>
+  <g transform="translate(11 13) scale(0.78)" stroke="#3F74D9" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Cœur dont le coin supérieur droit forme une encoche carrée : le « bit » manquant. -->
+    <path d="M50 86 C22 67 10 51 10 36 C10 23 20 14 32 14 C40 14 46 18 50 25 C54 18 60 14 67 14 L73 14 L73 28 L89.4 28 C89.8 30.5 90 33 90 36 C90 51 78 67 50 86 Z"
+          fill="url(#heart)" stroke-width="4.2"/>
+    <!-- Le bit qui s'échappe, translucide. -->
+    <rect x="81" y="0" width="12" height="12" rx="2.6" fill="#FFFFFF" fill-opacity="0.7" stroke-opacity="0.6" stroke-width="3.8"/>
+  </g>
+</svg>

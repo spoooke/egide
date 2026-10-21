@@ -1,0 +1,482 @@
+name: Egide
+options:
+  bundleIdPrefix: com.spoooke
+  deploymentTarget:
+    iOS: "26.0"
+    macOS: "26.0"
+  createIntermediateGroups: true
+  developmentLanguage: fr
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    # Compte Apple gratuit (Personal Team) : signature automatique, profils valables 7 jours.
+    DEVELOPMENT_TEAM: D27T4CRQL9
+    CODE_SIGN_STYLE: Automatic
+    TARGETED_DEVICE_FAMILY: "1"
+
+# Un module par outil (framework) : chacun garde sa version de Swift et ses tests.
+targetTemplates:
+  Kit:
+    type: framework
+    platform: iOS
+    sources: ["Modules/${target_name}/Sources"]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.spoooke.egide.${target_name}
+        GENERATE_INFOPLIST_FILE: YES
+        SKIP_INSTALL: YES
+  KitTests:
+    type: bundle.unit-test
+    platform: iOS
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+
+targets:
+  Egide:
+    type: application
+    platform: iOS
+    sources: [Egide]
+    dependencies:
+      - target: EgideControls
+      - target: EgidePartage
+      - target: ArgosKit
+      - target: HermesKit
+      - target: MuseKit
+      - target: PactoleKit
+      - target: HephaistosKit
+      - target: CerbereKit
+      - target: IrisKit
+      - target: EgideUI
+    # Info.plist commun à tous les onglets (fusionné avec le plist généré).
+    info:
+      path: Egide/Info.plist
+      properties:
+        CFBundleLocalizations: [fr]
+        # Argos et Hermès : QR code de connexion ou d'appairage ; Iris : scanner un document.
+        NSCameraUsageDescription: La caméra sert uniquement à scanner les QR codes de connexion et d'appairage affichés par ton Mac (Argos, Hermès) et les tickets ou documents que tu photographies dans Iris.
+        # Iris : fichiers reçus de l'extension de partage, par le trousseau commun (voir IrisColis).
+        IrisGroupeTrousseau: $(AppIdentifierPrefix)com.spoooke.egide.partage
+        # Iris : copie des pages dans Photos, si le réglage est actif (ajout seul, Iris ne voit pas la photothèque).
+        NSPhotoLibraryAddUsageDescription: Iris ajoute les pages de tes scans à Photos quand tu actives « Garder le scan dans Photos ». Iris ne voit pas tes photos.
+        # Argos (verrouillage de l'onglet), Hermès (clé liée à Face ID), Money (option).
+        NSFaceIDUsageDescription: Face ID protège l'accès aux onglets sensibles d'Égide et confirme les appairages.
+        # Hermès cherche le Mac sur le réseau local ; Argos peut y joindre un serveur en HTTP.
+        NSLocalNetworkUsageDescription: Égide cherche ton Mac sur le réseau local pour Hermès et Argos.
+        NSBonjourServices: [_swiftview._tcp]
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+        # Muse : alarmes réglées sur les idées.
+        NSAlarmKitUsageDescription: Pour faire sonner les alarmes que tu règles dans Égide (idées de Muse).
+        # Dossier « Égide » visible dans l'app Fichiers (Sur mon iPhone).
+        UIFileSharingEnabled: true
+        LSSupportsOpeningDocumentsInPlace: true
+        # egide://<module>/… ; muse:// gardé pour les raccourcis et le contrôle existants.
+        CFBundleURLTypes:
+          - CFBundleURLName: com.spoooke.egide
+            CFBundleURLSchemes: [egide, muse]
+        # Reçus (Money) : « Ouvrir dans Égide » depuis Fichiers, Mail, PayPal…
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: Reçu
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [com.adobe.pdf, public.image, public.plain-text, public.html, com.apple.mail.email]
+        # Toutes les orientations déclarées ; l’app ne permet le paysage que dans l’onglet Hermès (AppDelegate.orientations).
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+          # Jamais utilisée (AppDelegate.orientations), déclarée pour éviter l’avertissement « toutes les orientations ».
+          - UIInterfaceOrientationPortraitUpsideDown
+    # Trousseau : le groupe de l'app d'abord (rien ne change pour les clés d'Argos et d'Hermès), puis celui
+    # partagé avec l'extension de partage. Le profil gratuit couvre déjà <équipe>.*.
+    entitlements:
+      path: Egide/Egide.entitlements
+      properties:
+        keychain-access-groups:
+          - $(AppIdentifierPrefix)com.spoooke.egide
+          - $(AppIdentifierPrefix)com.spoooke.egide.partage
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.spoooke.egide
+        # Nom technique sans accent (la signature échoue sinon) ; nom affiché avec accent.
+        PRODUCT_NAME: Egide
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Égide
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        SUPPORTS_MACCATALYST: NO
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
+  # Extension : bouton 💡 « Nouvelle idée » pour l'écran verrouillé et le Centre de contrôle.
+  EgideControls:
+    type: app-extension
+    platform: iOS
+    sources:
+      - Controls
+      # Action partagée avec l'app (exécutée dans l'app).
+      - Egide/Intents/OpenCaptureIntent.swift
+    info:
+      path: Controls/Info.plist
+      properties:
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.spoooke.egide.controls
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: $(inherited) EGIDE_EXTENSION
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Égide
+        SKIP_INSTALL: YES
+  # Extension de partage : « Égide » dans la feuille de partage de Safari ou de GitHub, pour passer un lien à Cerbère,
+  # et dans celle de Photos ou de Fichiers, pour passer une photo ou un PDF à Iris.
+  EgidePartage:
+    type: app-extension
+    platform: iOS
+    sources:
+      - Partage
+      # Passage des fichiers à Iris (trousseau commun), partagé avec IrisKit.
+      - Modules/IrisKit/Sources/IrisColis.swift
+    info:
+      path: Partage/Info.plist
+      properties:
+        CFBundleDisplayName: Égide
+        IrisGroupeTrousseau: $(AppIdentifierPrefix)com.spoooke.egide.partage
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.share-services
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).PartageViewController
+          NSExtensionAttributes:
+            # Proposée pour un lien web (Cerbère), ou jusqu'à 20 photos ou fichiers (Iris).
+            NSExtensionActivationRule:
+              NSExtensionActivationSupportsWebURLWithMaxCount: 1
+              NSExtensionActivationSupportsImageWithMaxCount: 20
+              NSExtensionActivationSupportsFileWithMaxCount: 20
+    entitlements:
+      path: Partage/Partage.entitlements
+      properties:
+        keychain-access-groups:
+          - $(AppIdentifierPrefix)com.spoooke.egide.partage
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.spoooke.egide.partage
+        GENERATE_INFOPLIST_FILE: YES
+        SKIP_INSTALL: YES
+  EgideTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [EgideTests]
+    dependencies:
+      - target: Egide
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+
+  # Thème d'Égide (couleurs, fond, carte, boutons, en-tête), partagé par l'accueil et chaque app ; Mac compris pour Pactole.
+  EgideUI:
+    templates: [Kit]
+    platform: auto
+    supportedDestinations: [iOS, macOS]
+
+  # Sources/iOS : connexion par QR code et verrouillage Face ID ; Sources/macOS : connexion au serveur local.
+  ArgosKit:
+    type: framework
+    platform: auto
+    supportedDestinations: [iOS, macOS]
+    sources:
+      - path: Modules/ArgosKit/Sources
+        excludes: ["iOS/**", "macOS/**"]
+      - path: Modules/ArgosKit/Sources/iOS
+        destinationFilters: [iOS]
+      - path: Modules/ArgosKit/Sources/macOS
+        destinationFilters: [macOS]
+    dependencies:
+      - target: EgideUI
+        embed: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.spoooke.egide.ArgosKit
+        GENERATE_INFOPLIST_FILE: YES
+        SKIP_INSTALL: YES
+        SWIFT_VERSION: "6.0"
+  ArgosKitTests:
+    templates: [KitTests]
+    sources: [Modules/ArgosKit/Tests]
+    dependencies: [{ target: ArgosKit }]
+    settings:
+      base:
+        SWIFT_VERSION: "6.0"
+  # Hermès reste en Swift 5 : son client (RemoteClient, VideoView) partage l'état entre le fil réseau et
+  # l'écran ; le passer en Swift 6 demande de le réécrire, à tester sur l'iPhone avec l'agent du Mac.
+  HermesKit:
+    templates: [Kit]
+    dependencies:
+      - target: EgideUI
+        embed: false
+    settings:
+      base:
+        SWIFT_VERSION: "5.0"
+  HermesKitTests:
+    templates: [KitTests]
+    sources: [Modules/HermesKit/Tests]
+    dependencies: [{ target: HermesKit }]
+    settings:
+      base:
+        SWIFT_VERSION: "5.0"
+  # Muse existe aussi dans Égide Mac (nouvel appareil de la synchro iCloud Drive).
+  MuseKit:
+    templates: [Kit]
+    platform: auto
+    supportedDestinations: [iOS, macOS]
+    dependencies:
+      - target: EgideUI
+        embed: false
+  MuseKitTests:
+    templates: [KitTests]
+    sources: [Modules/MuseKit/Tests]
+    dependencies: [{ target: MuseKit }]
+  # Money existe aussi sur le Mac (app PactoleMac) : PactoleKit est compilé pour les deux.
+  PactoleKit:
+    templates: [Kit]
+    platform: auto
+    supportedDestinations: [iOS, macOS]
+    dependencies:
+      - target: EgideUI
+        embed: false
+  PactoleKitTests:
+    templates: [KitTests]
+    sources: [Modules/PactoleKit/Tests]
+    dependencies: [{ target: PactoleKit }]
+
+  # App Mac native de Money : fenêtre + reste de la semaine dans la barre des menus, synchro avec l'iPhone.
+  PactoleMac:
+    type: application
+    platform: macOS
+    sources:
+      # Le SVG source de l'icône n'est pas copié dans l'app (scripts/make-money-icon.swift le rend en PNG).
+      - path: PactoleMac
+        excludes: ["Resources/money-icon.svg"]
+    dependencies:
+      - target: PactoleKit
+      - target: EgideUI
+    info:
+      path: PactoleMac/Info.plist
+      properties:
+        CFBundleLocalizations: [fr]
+        LSApplicationCategoryType: public.app-category.finance
+        # Reçus (Pactole) : « Ouvrir avec › Pactole » ou glisser sur l'icône du Dock
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: Reçu
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [com.adobe.pdf, public.image, public.plain-text, public.html, com.apple.mail.email]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.spoooke.money
+        # Pactole (nom de code : Money). Identifiant inchangé : réglages et dossier de synchro gardés.
+        PRODUCT_NAME: Pactole
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Pactole
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ENABLE_HARDENED_RUNTIME: NO
+
+  # Héphaïstos : températures du Mac. Sources/macOS : capteurs et barre des menus (app HephaistosMac) ;
+  # Sources/iOS : onglet d'Égide, qui lit les mesures sur le serveur Argos ; Sources/Shared : format échangé.
+  HephaistosKit:
+    type: framework
+    platform: auto
+    supportedDestinations: [iOS, macOS]
+    sources:
+      - path: Modules/HephaistosKit/Sources/Shared
+      - path: Modules/HephaistosKit/Sources/macOS
+        destinationFilters: [macOS]
+      - path: Modules/HephaistosKit/Sources/iOS
+        destinationFilters: [iOS]
+    dependencies:
+      - target: EgideUI
+        embed: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.spoooke.egide.HephaistosKit
+        GENERATE_INFOPLIST_FILE: YES
+        SKIP_INSTALL: YES
+  HephaistosKitTests:
+    templates: [KitTests]
+    platform: macOS
+    sources: [Modules/HephaistosKit/Tests]
+    dependencies: [{ target: HephaistosKit }]
+  HephaistosMac:
+    type: application
+    platform: macOS
+    sources:
+      # Le SVG source de l'icône n'est pas copié dans l'app (scripts/make-hephaistos-icon.swift le rend en PNG).
+      - path: HephaistosMac
+        excludes: ["Resources/hephaistos-icon.svg"]
+    dependencies:
+      - target: HephaistosKit
+      - target: EgideUI
+    info:
+      path: HephaistosMac/Info.plist
+      properties:
+        CFBundleLocalizations: [fr]
+        LSApplicationCategoryType: public.app-category.utilities
+        # Barre des menus seulement : pas d'icône dans le Dock.
+        LSUIElement: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.spoooke.hephaistos
+        # Nom technique sans accent (la signature échoue sinon) ; nom affiché avec accents.
+        PRODUCT_NAME: Hephaistos
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Héphaïstos
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ENABLE_HARDENED_RUNTIME: NO
+
+  # Cerbère : audit de sécurité statique d'un dépôt, d'une app ou d'un fichier (rien n'est exécuté).
+  # Sources/Shared : format du rapport et des demandes à distance ; Sources/Interface : affichage sûr du rapport (texte brut) ;
+  # Sources/macOS : quarantaine, règles, lecture par IA ; Sources/iOS : app Cerbère d'Égide, qui passe par le serveur Argos.
+  CerbereKit:
+    type: framework
+    platform: auto
+    supportedDestinations: [iOS, macOS]
+    sources:
+      - path: Modules/CerbereKit/Sources/Shared
+      - path: Modules/CerbereKit/Sources/Interface
+      - path: Modules/CerbereKit/Sources/Commun
+        destinationFilters: [macOS]
+      - path: Modules/CerbereKit/Sources/macOS
+        destinationFilters: [macOS]
+      - path: Modules/CerbereKit/Sources/iOS
+        destinationFilters: [iOS]
+    dependencies:
+      - target: EgideUI
+        embed: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.spoooke.egide.CerbereKit
+        GENERATE_INFOPLIST_FILE: YES
+        SKIP_INSTALL: YES
+  CerbereKitTests:
+    templates: [KitTests]
+    platform: macOS
+    sources:
+      # Tests/Windows : essais lancés sur le PC (scripts/essais-cerbere-windows.ps1).
+      - path: Modules/CerbereKit/Tests
+        excludes: ["Windows/**"]
+    dependencies: [{ target: CerbereKit }]
+  # Outil en ligne de commande : les sources du module sont compilées dedans (un seul fichier à installer).
+  cerbere:
+    type: tool
+    platform: macOS
+    sources: [CerbereCLI, Modules/CerbereKit/Sources/Shared, Modules/CerbereKit/Sources/Commun, Modules/CerbereKit/Sources/macOS]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.spoooke.cerbere.cli
+        ENABLE_HARDENED_RUNTIME: NO
+
+  # App Mac de Cerbère : coller un lien ou glisser un dossier, suivi de l'audit, rapport, historique et comparaison.
+  CerbereMac:
+    type: application
+    platform: macOS
+    sources:
+      # Le SVG source de l'icône n'est pas copié dans l'app (scripts/make-cerbere-icon.swift le rend en PNG).
+      - path: CerbereMac
+        excludes: ["Resources/cerbere-icon.svg"]
+    dependencies:
+      - target: CerbereKit
+      - target: EgideUI
+    info:
+      path: CerbereMac/Info.plist
+      properties:
+        CFBundleLocalizations: [fr]
+        LSApplicationCategoryType: public.app-category.developer-tools
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.spoooke.cerbere
+        # Nom technique sans accent (la signature échoue sinon) ; nom affiché avec accent.
+        PRODUCT_NAME: Cerbere
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Cerbère
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ENABLE_HARDENED_RUNTIME: NO
+
+  # Égide sur le Mac : une seule app, un onglet par outil, une seule icône dans la barre des menus.
+  # Reprend les vues Mac d'Héphaïstos et de Cerbère (sans leur point d'entrée) et l'écran de Pactole (PactoleKit).
+  EgideMac:
+    type: application
+    platform: macOS
+    sources:
+      - path: EgideMac
+      - path: HephaistosMac
+        excludes: ["HephaistosMacApp.swift", "Info.plist", "Resources/**"]
+      - path: CerbereMac
+        excludes: ["CerbereMacApp.swift", "Info.plist", "Resources/**"]
+    dependencies:
+      - target: HephaistosKit
+      - target: PactoleKit
+      - target: CerbereKit
+      - target: MuseKit
+      - target: ArgosKit
+      - target: EgideUI
+    info:
+      path: EgideMac/Info.plist
+      properties:
+        CFBundleLocalizations: [fr]
+        LSApplicationCategoryType: public.app-category.utilities
+        # Reçus (Pactole) : « Ouvrir avec › Égide » ou glisser sur l'icône du Dock.
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: Reçu
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [com.adobe.pdf, public.image, public.plain-text, public.html, com.apple.mail.email]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.spoooke.egide.mac
+        # Nom technique sans accent (la signature échoue sinon) ; nom affiché avec accent.
+        PRODUCT_NAME: EgideMac
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Égide
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ENABLE_HARDENED_RUNTIME: NO
+
+  # Iris : scanner un ticket ou un document et l'envoyer par mail. Icône : Modules/IrisKit/iris-icon.svg.
+  IrisKit:
+    templates: [Kit]
+    dependencies:
+      - target: EgideUI
+        embed: false
+  IrisKitTests:
+    templates: [KitTests]
+    sources: [Modules/IrisKit/Tests]
+    dependencies: [{ target: IrisKit }]
+
+schemes:
+  Egide:
+    build:
+      targets:
+        Egide: all
+    test:
+      targets: [EgideTests, ArgosKitTests, HermesKitTests, MuseKitTests, PactoleKitTests, IrisKitTests]
+  PactoleMac:
+    build:
+      targets:
+        PactoleMac: all
+  HephaistosMac:
+    build:
+      targets:
+        HephaistosMac: all
+    test:
+      targets: [HephaistosKitTests]
+  Cerbere:
+    build:
+      targets:
+        cerbere: all
+    test:
+      targets: [CerbereKitTests]
+  CerbereMac:
+    build:
+      targets:
+        CerbereMac: all

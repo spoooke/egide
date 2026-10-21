@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Reçu</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.adobe.pdf</string>
+				<string>public.image</string>
+				<string>public.plain-text</string>
+				<string>public.html</string>
+				<string>com.apple.mail.email</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>fr</string>
+	</array>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.spoooke.egide</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>egide</string>
+				<string>muse</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>IrisGroupeTrousseau</key>
+	<string>$(AppIdentifierPrefix)com.spoooke.egide.partage</string>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>NSAlarmKitUsageDescription</key>
+	<string>Pour faire sonner les alarmes que tu règles dans Égide (idées de Muse).</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_swiftview._tcp</string>
+	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>La caméra sert uniquement à scanner les QR codes de connexion et d'appairage affichés par ton Mac (Argos, Hermès) et les tickets ou documents que tu photographies dans Iris.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Face ID protège l'accès aux onglets sensibles d'Égide et confirme les appairages.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Égide cherche ton Mac sur le réseau local pour Hermès et Argos.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Iris ajoute les pages de tes scans à Photos quand tu actives « Garder le scan dans Photos ». Iris ne voit pas tes photos.</string>
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,12 @@
+.DS_Store
+xcuserdata/
+DerivedData/
+build/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Fichiers de synchro de Muse et Money (données perso, jamais dans git)
+idees-*.json
+depenses-*.json
+
+# Exports du Suivi hebdo (données perso)
+suivi-hebdo-*.json

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 100 100">
+  <!-- Icône de Cerbère, même famille qu'Argos, Hermès, Muse, Pactole et Héphaïstos : fond blanc → bleu pâle, trait bleu.
+       Bouclier (l'égide) gardé par trois têtes de chien : une par cible auditée (dépôt, app, fichier). -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/>
+    <stop offset="1" stop-color="#DCE9FB"/>
+    </linearGradient>
+    <linearGradient id="fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4F8FF"/>
+    <stop offset="1" stop-color="#D3E3FA"/>
+    </linearGradient>
+    <g id="tete">
+      <path d="M42 28 L46 35 Q50 33 54 35 L58 28 L59 44 Q58 54 50 57 Q42 54 41 44 Z" fill="#FFFFFF" stroke-width="4.6"/>
+      <circle cx="46.4" cy="43.5" r="1.9" fill="#3F74D9" stroke="none"/>
+      <circle cx="53.6" cy="43.5" r="1.9" fill="#3F74D9" stroke="none"/>
+    </g>
+  </defs>
+  <rect width="100" height="100" fill="url(#bg)"/>
+  <g stroke="#3F74D9" stroke-linejoin="round" stroke-linecap="round" fill="none">
+    <path d="M50 16 L79 26 V51 C79 69 66 81 50 87 C34 81 21 69 21 51 V26 Z" fill="url(#fill)" stroke-width="3.6"/>
+    <use href="#tete" transform="translate(-0.5 24) scale(.75)"/>
+    <use href="#tete" transform="translate(25.5 24) scale(.75)"/>
+    <use href="#tete" transform="translate(12.5 8.5) scale(.75)"/>
+  </g>
+</svg>

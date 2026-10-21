@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   LastUpgradeVersion = "1430"
+   version = "1.7">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES"
+      runPostActionsOnFailure = "NO">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A1FBF70A8B8EE2F77F3BC998"
+               BuildableName = "Egide.app"
+               BlueprintName = "Egide"
+               ReferencedContainer = "container:Egide.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      onlyGenerateCoverageForSpecifiedTargets = "NO">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A1FBF70A8B8EE2F77F3BC998"
+            BuildableName = "Egide.app"
+            BlueprintName = "Egide"
+            ReferencedContainer = "container:Egide.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
+      <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F90038FD775F9E15DECC7C69"
+               BuildableName = "EgideTests.xctest"
+               BlueprintName = "EgideTests"
+               ReferencedContainer = "container:Egide.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2114296B8BDFB1860AC17948"
+               BuildableName = "ArgosKitTests.xctest"
+               BlueprintName = "ArgosKitTests"
+               ReferencedContainer = "container:Egide.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "ADB34A15AB4456DAAE4CB612"
+               BuildableName = "HermesKitTests.xctest"
+               BlueprintName = "HermesKitTests"
+               ReferencedContainer = "container:Egide.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4AE510436959C2234C53A7C1"
+               BuildableName = "MuseKitTests.xctest"
+               BlueprintName = "MuseKitTests"
+               ReferencedContainer = "container:Egide.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8939B2A479E0FE39BB9CD6C7"
+               BuildableName = "PactoleKitTests.xctest"
+               BlueprintName = "PactoleKitTests"
+               ReferencedContainer = "container:Egide.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "EE5BB20F128A7A33B3E10DF9"
+               BuildableName = "IrisKitTests.xctest"
+               BlueprintName = "IrisKitTests"
+               ReferencedContainer = "container:Egide.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+      </Testables>
+      <CommandLineArguments>
+      </CommandLineArguments>
+   </TestAction>
+   <LaunchAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      ignoresPersistentStateOnLaunch = "NO"
+      debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
+      allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A1FBF70A8B8EE2F77F3BC998"
+            BuildableName = "Egide.app"
+            BlueprintName = "Egide"
+            ReferencedContainer = "container:Egide.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </LaunchAction>
+   <ProfileAction
+      buildConfiguration = "Release"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A1FBF70A8B8EE2F77F3BC998"
+            BuildableName = "Egide.app"
+            BlueprintName = "Egide"
+            ReferencedContainer = "container:Egide.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Release"
+      revealArchiveInOrganizer = "YES">
+   </ArchiveAction>
+</Scheme>
