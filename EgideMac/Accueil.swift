@@ -38,10 +38,14 @@ struct Accueil: View {
             .frame(maxWidth: 1000, alignment: .leading)
         }
         .scrollBounceBehavior(.basedOnSize)
+        // Refreshed every minute while the home stays on screen (expenses synced from the iPhone, machines).
         .task {
-            semaine = await PactoleKit.summary()
-            idees = await MuseKit.summary()
-            machines = await ArgosKit.summary()
+            while !Task.isCancelled {
+                semaine = await PactoleKit.summary()
+                idees = await MuseKit.summary()
+                machines = await ArgosKit.summary()
+                try? await Task.sleep(for: .seconds(60))
+            }
         }
     }
 

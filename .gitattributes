@@ -1,0 +1,3 @@
+# Internal plan and pre-merge checklist: kept in the repo, left out of the public copy (scripts/publier.sh).
+docs/refonte.md export-ignore
+docs/tests-avant-fusion.md export-ignore

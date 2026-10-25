@@ -70,8 +70,7 @@ struct ProjectDetailView: View {
             .egideRow()
         }
         .egideList()
-        .egideTitre(project.name)
-        .toolbar {
+        .egideTitre(project.name) {
             Button {
                 Task { await refresh() }
             } label: {

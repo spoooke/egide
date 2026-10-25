@@ -2,6 +2,7 @@ import EgideUI
 import ArgosKit
 import PactoleKit
 import MuseKit
+import MnemosyneKit
 import SwiftUI
 
 /// Fenêtre principale : la colonne d'outils à gauche, l'onglet ouvert à droite, sur le fond dégradé d'Égide.
@@ -49,6 +50,11 @@ struct FenetreEgide: View {
             IrisMac()
         case .cerbere:
             Fenetre(modele: etat.cerbere, enOnglet: true)
+        case .mnemosyne:
+            Onglet.page(.mnemosyne) {
+                MnemosyneView(model: etat.mnemosyne)
+                    .frame(maxWidth: 976)
+            }
         case .argos:
             ArgosRootView()
                 .environment(\.egideIcone, Image(Onglet.argos.icone))

@@ -38,6 +38,7 @@ public struct PactoleRootView: View {
     public var body: some View {
         PactoleHomeView(route: PactoleRoute(path: path), request: request, icone: icone)
             .modelContainer(PactoleDatabase.container)
+            .defaultAppStorage(PactoleReglages.defaults)
             .environment(\.goHome, onHome)
             .tint(EgideTheme.bleu)
     }

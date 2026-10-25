@@ -43,30 +43,45 @@ enum PactoleReglages {
     /// Signet du fichier transactions.csv choisi dans l'app (lecture de secours).
     static let cleSignetCSV = "money.signetTransactionsCSV"
 
+    /// Where Pactole keeps its settings. In demo mode, a separate store filled with made-up values:
+    /// the real balance, salary and ceiling are neither shown nor overwritten.
+    /// UserDefaults is thread-safe; the store itself never changes after launch.
+    nonisolated(unsafe) static let defaults: UserDefaults = {
+        let suite = "com.spoooke.egide.demo.pactole"
+        guard EgideDemo.actif, let demo = UserDefaults(suiteName: suite) else { return .standard }
+        demo.removePersistentDomain(forName: suite)
+        let valeurs: [String: Any] = [
+            clePlafondHebdo: 135_00, "money.soldeCentimes": 1_240_00, "money.soldeDate": Date.now.timeIntervalSince1970,
+            "money.jourPaie": 6, "money.salaireAttenduCentimes": 1_850_00, "money.margeCentimes": 100_00, "money.paieRecue": 0.0,
+        ]
+        valeurs.forEach { demo.set($1, forKey: $0) }
+        return demo
+    }()
+
     static var plafondHebdoCentimes: Int {
-        get { UserDefaults.standard.object(forKey: clePlafondHebdo) as? Int ?? 135_00 }
+        get { PactoleReglages.defaults.object(forKey: clePlafondHebdo) as? Int ?? 135_00 }
         set {
-            UserDefaults.standard.set(newValue, forKey: clePlafondHebdo)
+            PactoleReglages.defaults.set(newValue, forKey: clePlafondHebdo)
             plafondHebdoModifie = .now
         }
     }
 
     /// Date du dernier changement du plafond de la semaine (la plus récente gagne à la synchro).
     static var plafondHebdoModifie: Date {
-        get { UserDefaults.standard.object(forKey: "money.plafondHebdoModifie") as? Date ?? .distantPast }
-        set { UserDefaults.standard.set(newValue, forKey: "money.plafondHebdoModifie") }
+        get { PactoleReglages.defaults.object(forKey: "money.plafondHebdoModifie") as? Date ?? .distantPast }
+        set { PactoleReglages.defaults.set(newValue, forKey: "money.plafondHebdoModifie") }
     }
 
     /// Date du dernier changement de l'écran « Solde et paie » (le plus récent gagne à la synchro).
     static var tresorerieModifie: Date {
-        get { UserDefaults.standard.object(forKey: "money.tresorerieModifie") as? Date ?? .distantPast }
-        set { UserDefaults.standard.set(newValue, forKey: "money.tresorerieModifie") }
+        get { PactoleReglages.defaults.object(forKey: "money.tresorerieModifie") as? Date ?? .distantPast }
+        set { PactoleReglages.defaults.set(newValue, forKey: "money.tresorerieModifie") }
     }
 
     /// Réglages de « Solde et paie » (mêmes clés que les @AppStorage de TresorerieView).
     static var tresorerie: ReglagesTresorerie {
         get {
-            let d = UserDefaults.standard
+            let d = PactoleReglages.defaults
             return ReglagesTresorerie(
                 soldeCentimes: d.object(forKey: "money.soldeCentimes") as? Int ?? 0,
                 soldeDate: d.object(forKey: "money.soldeDate") as? Double ?? 0,
@@ -76,7 +91,7 @@ enum PactoleReglages {
                 paieRecue: d.object(forKey: "money.paieRecue") as? Double ?? 0)
         }
         set {
-            let d = UserDefaults.standard
+            let d = PactoleReglages.defaults
             d.set(newValue.soldeCentimes, forKey: "money.soldeCentimes")
             d.set(newValue.soldeDate, forKey: "money.soldeDate")
             d.set(newValue.jourPaie, forKey: "money.jourPaie")

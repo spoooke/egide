@@ -1,6 +1,7 @@
 import ArgosKit
 import CerbereKit
 import HephaistosKit
+import MnemosyneKit
 import SwiftUI
 import UserNotifications
 
@@ -15,6 +16,8 @@ struct EgideApp: App {
         HephaistosKit.charger = { try await ArgosKit.fetch("api/temperature") }
         // Cerbère demande ses audits au Mac, et relit les rapports, par la même connexion.
         CerbereKit.serveur = { try await ArgosKit.call($0, method: $1, json: $2) }
+        // Mnemosyne: the Mac's last Time Machine backup, and « Sauvegarder maintenant ».
+        MnemosyneKit.server = { try await ArgosKit.call($0, method: $1, json: $2) }
     }
 
     var body: some Scene {

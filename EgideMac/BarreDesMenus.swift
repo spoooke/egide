@@ -39,7 +39,12 @@ struct BarreDesMenus: View {
         .frame(width: 340)
         .foregroundStyle(EgideTheme.encre)
         .tint(EgideTheme.bleu)
-        .task { semaine = await PactoleKit.summary() }
+        // The menu's window is only hidden between two openings: recompute the week each time it shows.
+        .background {
+            SuiviDeFenetre { visible in
+                if visible { Task { semaine = await PactoleKit.summary() } }
+            }
+        }
     }
 
     private func ouvrir(_ onglet: Onglet) {

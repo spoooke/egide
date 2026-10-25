@@ -6,10 +6,11 @@ import PactoleKit
 import HephaistosKit
 import CerbereKit
 import IrisKit
+import MnemosyneKit
 
 /// Les outils d'Égide, un onglet chacun. Ajouter un module : scripts/new-module.sh (voir README).
 enum Module: String, CaseIterable, Identifiable, Codable {
-    case argos, hermes, muse, money, hephaistos, cerbere, iris
+    case argos, hermes, muse, money, hephaistos, cerbere, iris, mnemosyne
 
     var id: String { rawValue }
 
@@ -22,6 +23,7 @@ enum Module: String, CaseIterable, Identifiable, Codable {
         case .hephaistos: HephaistosKit.title
         case .cerbere: CerbereKit.title
         case .iris: IrisKit.title
+        case .mnemosyne: MnemosyneKit.title
         }
     }
 
@@ -34,6 +36,7 @@ enum Module: String, CaseIterable, Identifiable, Codable {
         case .hephaistos: HephaistosKit.systemImage
         case .cerbere: CerbereKit.systemImage
         case .iris: IrisKit.systemImage
+        case .mnemosyne: MnemosyneKit.systemImage
         }
     }
 
@@ -51,6 +54,7 @@ enum Module: String, CaseIterable, Identifiable, Codable {
         case .hephaistos: await HephaistosKit.summary()
         case .cerbere: await CerbereKit.summary()
         case .iris: await IrisKit.summary()
+        case .mnemosyne: await MnemosyneKit.summary()
         }
     }
 
@@ -65,6 +69,7 @@ enum Module: String, CaseIterable, Identifiable, Codable {
         case .hephaistos: try HephaistosKit.backup()
         case .cerbere: try CerbereKit.backup()
         case .iris: try IrisKit.backup()
+        case .mnemosyne: try MnemosyneKit.backup()
         }
     }
 
@@ -79,6 +84,7 @@ enum Module: String, CaseIterable, Identifiable, Codable {
         case .hephaistos: try HephaistosKit.restore(data)
         case .cerbere: try CerbereKit.restore(data)
         case .iris: try IrisKit.restore(data)
+        case .mnemosyne: try MnemosyneKit.restore(data)
         }
     }
 
@@ -100,6 +106,7 @@ enum Module: String, CaseIterable, Identifiable, Codable {
         case .hephaistos: HephaistosRootView(path: path, request: link?.request ?? 0, onHome: onHome)
         case .cerbere: CerbereRootView(path: path, request: link?.request ?? 0, onHome: onHome)
         case .iris: IrisRootView(path: path, request: link?.request ?? 0, onHome: onHome)
+        case .mnemosyne: MnemosyneRootView(path: path, request: link?.request ?? 0, onHome: onHome)
         }
     }
 }

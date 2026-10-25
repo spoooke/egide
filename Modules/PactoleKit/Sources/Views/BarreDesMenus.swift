@@ -23,7 +23,7 @@ public struct PactoleMenuBarContent: View {
     }
 
     public var body: some View {
-        ContenuBarre(ouvrir: ouvrir).modelContainer(PactoleDatabase.container)
+        ContenuBarre(ouvrir: ouvrir).modelContainer(PactoleDatabase.container).defaultAppStorage(PactoleReglages.defaults)
     }
 }
 

@@ -49,6 +49,7 @@ targets:
       - target: HephaistosKit
       - target: CerbereKit
       - target: IrisKit
+      - target: MnemosyneKit
       - target: EgideUI
     # Info.plist commun à tous les onglets (fusionné avec le plist généré).
     info:
@@ -419,6 +420,7 @@ targets:
       - target: CerbereKit
       - target: MuseKit
       - target: ArgosKit
+      - target: MnemosyneKit
       - target: EgideUI
     info:
       path: EgideMac/Info.plist
@@ -453,6 +455,33 @@ targets:
     sources: [Modules/IrisKit/Tests]
     dependencies: [{ target: IrisKit }]
 
+  # Mnemosyne: Time Machine backup reminders. Sources/macOS: tmutil, backupd's log, Égide Mac's tab;
+  # Sources/iOS: Égide's tab, reading the Argos server; Sources/Shared: schedule and the format exchanged.
+  # Icon: Modules/MnemosyneKit/mnemosyne-icon.svg.
+  MnemosyneKit:
+    type: framework
+    platform: auto
+    supportedDestinations: [iOS, macOS]
+    sources:
+      - path: Modules/MnemosyneKit/Sources/Shared
+      - path: Modules/MnemosyneKit/Sources/macOS
+        destinationFilters: [macOS]
+      - path: Modules/MnemosyneKit/Sources/iOS
+        destinationFilters: [iOS]
+    dependencies:
+      - target: EgideUI
+        embed: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.spoooke.egide.MnemosyneKit
+        GENERATE_INFOPLIST_FILE: YES
+        SKIP_INSTALL: YES
+  MnemosyneKitTests:
+    templates: [KitTests]
+    platform: macOS
+    sources: [Modules/MnemosyneKit/Tests]
+    dependencies: [{ target: MnemosyneKit }]
+
 schemes:
   Egide:
     build:
@@ -480,3 +509,9 @@ schemes:
     build:
       targets:
         CerbereMac: all
+  EgideMac:
+    build:
+      targets:
+        EgideMac: all
+    test:
+      targets: [MnemosyneKitTests]

@@ -11,8 +11,8 @@ enum PactoleNotifications {
     private static let idBilan = "money.bilan.dimanche"
     private static let clePlanifie = "money.notifications.bilanPlanifie"
 
-    static var bilanActif: Bool { UserDefaults.standard.bool(forKey: cleBilan) }
-    static var alertesActives: Bool { UserDefaults.standard.bool(forKey: cleAlertes) }
+    static var bilanActif: Bool { PactoleReglages.defaults.bool(forKey: cleBilan) }
+    static var alertesActives: Bool { PactoleReglages.defaults.bool(forKey: cleAlertes) }
 
     static func demanderAutorisation() async -> Bool {
         (try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])) ?? false
@@ -23,16 +23,16 @@ enum PactoleNotifications {
     static func planifierBilan(_ context: ModelContext, maintenant: Date = .now) {
         // Le centre de notifications n'est touché que s'il y a quelque chose à faire
         // (hors d'une vraie app, dans les tests, y accéder fait planter le processus).
-        let dejaPlanifie = UserDefaults.standard.bool(forKey: clePlanifie)
+        let dejaPlanifie = PactoleReglages.defaults.bool(forKey: clePlanifie)
         guard bilanActif else {
             if dejaPlanifie {
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [idBilan])
-                UserDefaults.standard.set(false, forKey: clePlanifie)
+                PactoleReglages.defaults.set(false, forKey: clePlanifie)
             }
             return
         }
         let centre = UNUserNotificationCenter.current()
-        UserDefaults.standard.set(true, forKey: clePlanifie)
+        PactoleReglages.defaults.set(true, forKey: clePlanifie)
         let quand = Dimanche.prochain(apres: maintenant)
         let semaine = Periodes.semaine(contenant: quand)
         let depenses = (try? context.fetch(FetchDescriptor<Depense>())) ?? []

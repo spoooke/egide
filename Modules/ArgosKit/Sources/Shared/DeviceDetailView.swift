@@ -23,19 +23,16 @@ struct DeviceDetailView: View {
                 ProgressView()
             }
         }
-        .egideTitre(device?.latest.hostname ?? "")
-        .toolbar {
+        .egideTitre(device?.latest.hostname ?? "") {
             if let d = device, !d.isManual {
-                ToolbarItem(placement: .primaryAction) {
-                    Button(d.isScanning ? "Actualisation…" : "Actualiser", systemImage: "arrow.clockwise") {
-                        Task {
-                            try? await model.client?.scan(deviceID)
-                            await load()
-                        }
+                Button(d.isScanning ? "Actualisation…" : "Actualiser", systemImage: "arrow.clockwise") {
+                    Task {
+                        try? await model.client?.scan(deviceID)
+                        await load()
                     }
-                    .disabled(!d.online || d.isScanning)
-                    .help(d.online ? "Refaire le scan maintenant" : "Ordinateur hors ligne")
                 }
+                .disabled(!d.online || d.isScanning)
+                .help(d.online ? "Refaire le scan maintenant" : "Ordinateur hors ligne")
             }
         }
         .task(id: deviceID) {

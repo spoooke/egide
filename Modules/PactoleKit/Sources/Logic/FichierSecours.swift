@@ -14,11 +14,11 @@ enum FichierSecours {
         let acces = url.startAccessingSecurityScopedResource()
         defer { if acces { url.stopAccessingSecurityScopedResource() } }
         let signet = try url.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
-        UserDefaults.standard.set(signet, forKey: PactoleReglages.cleSignetCSV)
+        PactoleReglages.defaults.set(signet, forKey: PactoleReglages.cleSignetCSV)
     }
 
     static func oublier() {
-        UserDefaults.standard.removeObject(forKey: PactoleReglages.cleSignetCSV)
+        PactoleReglages.defaults.removeObject(forKey: PactoleReglages.cleSignetCSV)
     }
 
     /// Lit le fichier choisi (téléchargé depuis iCloud si besoin) et ajoute les paiements absents.
@@ -34,9 +34,9 @@ enum FichierSecours {
             do { texte = try String(contentsOf: lu, encoding: .utf8) } catch { erreurLecture = error }
         }
         if let erreur = erreurCoordination ?? erreurLecture { throw erreur }
-        var traitees = Set(UserDefaults.standard.stringArray(forKey: cleLignesTraitees) ?? [])
+        var traitees = Set(PactoleReglages.defaults.stringArray(forKey: cleLignesTraitees) ?? [])
         let bilan = try Paiements.lireCSV(texte, traitees: &traitees, dans: context)
-        UserDefaults.standard.set(Array(traitees), forKey: cleLignesTraitees)
+        PactoleReglages.defaults.set(Array(traitees), forKey: cleLignesTraitees)
         return bilan
     }
 
@@ -44,11 +44,11 @@ enum FichierSecours {
     private static let cleLignesTraitees = "money.lignesCSVTraitees"
 
     private static func resoudre() throws -> URL? {
-        guard let signet = UserDefaults.standard.data(forKey: PactoleReglages.cleSignetCSV) else { return nil }
+        guard let signet = PactoleReglages.defaults.data(forKey: PactoleReglages.cleSignetCSV) else { return nil }
         var perime = false
         let url = try URL(resolvingBookmarkData: signet, options: [], relativeTo: nil, bookmarkDataIsStale: &perime)
         if perime, let nouveau = try? url.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil) {
-            UserDefaults.standard.set(nouveau, forKey: PactoleReglages.cleSignetCSV)
+            PactoleReglages.defaults.set(nouveau, forKey: PactoleReglages.cleSignetCSV)
         }
         return url
     }

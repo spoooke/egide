@@ -171,14 +171,11 @@ struct NetworkView: View {
             .egideRow()
         }
         .egideList()
-        .egideTitre("Réseau local")
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                // Nouveau scan des réseaux (maison par le Mac, bureau par les PC).
-                Button(scanning ? "Scan en cours…" : "Actualiser", systemImage: "arrow.clockwise") { startScan() }
+        .egideTitre("Réseau local") {
+            // Nouveau scan des réseaux (maison par le Mac, bureau par les PC).
+            Button(scanning ? "Scan en cours…" : "Actualiser", systemImage: "arrow.clockwise") { startScan() }
                 .disabled(scanning)
                 .help("Scanner les réseaux maintenant")
-            }
         }
         .overlay { if showWait { waitCard } }
         .animation(.default, value: showWait)

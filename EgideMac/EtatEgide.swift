@@ -1,10 +1,11 @@
 import HephaistosKit
+import MnemosyneKit
 import Observation
 import SwiftUI
 
 /// Les outils d'Égide sur le Mac, un onglet chacun.
 enum Onglet: String, CaseIterable, Identifiable {
-    case accueil, hephaistos, pactole, muse, iris, cerbere, argos, hermes
+    case accueil, hephaistos, pactole, muse, iris, cerbere, mnemosyne, argos, hermes
 
     var id: String { rawValue }
 
@@ -16,6 +17,7 @@ enum Onglet: String, CaseIterable, Identifiable {
         case .muse: "Muse"
         case .iris: "Iris"
         case .cerbere: "Cerbère"
+        case .mnemosyne: "Mnémosyne"
         case .argos: "Argos"
         case .hermes: "Hermès"
         }
@@ -29,6 +31,7 @@ enum Onglet: String, CaseIterable, Identifiable {
         case .muse: "Idées, rappels, projets"
         case .iris: "Scans de l'iPhone, rangés par genre"
         case .cerbere: "Auditer un dépôt, une app ou un fichier"
+        case .mnemosyne: "Sauvegardes Time Machine"
         case .argos: "Surveillance des machines"
         case .hermes: "Piloter le Mac depuis l'iPhone"
         }
@@ -42,6 +45,7 @@ enum Onglet: String, CaseIterable, Identifiable {
         case .muse: "lightbulb"
         case .iris: "doc.viewfinder"
         case .cerbere: "checkmark.shield"
+        case .mnemosyne: "clock.arrow.circlepath"
         case .argos: "shield.lefthalf.filled"
         case .hermes: "iphone.and.arrow.forward"
         }
@@ -56,6 +60,7 @@ enum Onglet: String, CaseIterable, Identifiable {
         case .muse: "Icone-muse"
         case .iris: "Icone-iris"
         case .cerbere: "Icone-cerbere"
+        case .mnemosyne: "Icone-mnemosyne"
         case .argos: "Icone-argos"
         case .hermes: "Icone-hermes"
         }
@@ -71,6 +76,7 @@ final class EtatEgide {
     let hephaistos: HephaistosModele
     let notifications: Notifications
     let cerbere: Modele
+    let mnemosyne: MnemosyneModel
 
     init() {
         Reprise.reglagesDesAnciennesApps()
@@ -81,6 +87,10 @@ final class EtatEgide {
         self.hephaistos = hephaistos
         self.notifications = notifications
         cerbere = Modele()
+        let mnemosyne = MnemosyneModel()
+        notifications.onAction = { mnemosyne.handle(action: $0) }
+        mnemosyne.start()
+        self.mnemosyne = mnemosyne
         if hephaistos.reglagesAlerte.active || hephaistos.reglagesRessources.memoire || hephaistos.reglagesRessources.disque {
             Task { await notifications.verifier() }
         }

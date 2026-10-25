@@ -8,6 +8,8 @@ import UserNotifications
 final class Notifications: NSObject, UNUserNotificationCenterDelegate {
     /// Vrai quand les notifications d'Héphaïstos sont coupées dans Réglages Système.
     private(set) var refusees = false
+    /// Button tapped in a notification (its action identifier), for the tools that add one (Mnemosyne in Égide).
+    @ObservationIgnored var onAction: ((String) -> Void)?
 
     override init() {
         super.init()
@@ -37,5 +39,10 @@ final class Notifications: NSObject, UNUserNotificationCenterDelegate {
     /// Affiche aussi la bannière quand la fenêtre d'Héphaïstos est ouverte.
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
         [.banner, .list, .sound]
+    }
+
+    nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+        let action = response.actionIdentifier
+        await MainActor.run { onAction?(action) }
     }
 }

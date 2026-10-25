@@ -198,10 +198,10 @@ struct ReglagesView: View {
 
     /// Interrupteur de notification : demande l'autorisation à l'activation, reprogramme le bilan.
     private func notification(_ cle: String) -> Binding<Bool> {
-        Binding(get: { UserDefaults.standard.bool(forKey: cle) }, set: { actif in
-            UserDefaults.standard.set(actif, forKey: cle)
+        Binding(get: { PactoleReglages.defaults.bool(forKey: cle) }, set: { actif in
+            PactoleReglages.defaults.set(actif, forKey: cle)
             Task {
-                if actif, !(await PactoleNotifications.demanderAutorisation()) { UserDefaults.standard.set(false, forKey: cle) }
+                if actif, !(await PactoleNotifications.demanderAutorisation()) { PactoleReglages.defaults.set(false, forKey: cle) }
                 PactoleNotifications.planifierBilan(context)
             }
         })

@@ -1,0 +1,2 @@
+/* Name of the app menu: PRODUCT_NAME stays unaccented for signing. */
+"CFBundleName" = "Égide";

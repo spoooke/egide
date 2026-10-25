@@ -46,13 +46,12 @@ struct MoisView: View {
             .egideRow()
         }
         .egideList()
-        .egideTitre(date.formatted(Date.FormatStyle(locale: Locale(identifier: "fr_FR")).month(.wide).year()).capitalized)
-        .toolbar {
-            ToolbarItemGroup(placement: .primaryAction) {
-                Button("Mois précédent", systemImage: "chevron.left") { changerDeMois(-1) }
-                Button("Mois suivant", systemImage: "chevron.right") { changerDeMois(1) }
-                    .disabled(Periodes.mois(contenant: date).inclut(.now))
-            }
+        .egideTitre(date.formatted(Date.FormatStyle(locale: Locale(identifier: "fr_FR")).month(.wide).year()).capitalized) {
+            Button("Mois précédent", systemImage: "chevron.left") { changerDeMois(-1) }
+                .labelStyle(.iconOnly)
+            Button("Mois suivant", systemImage: "chevron.right") { changerDeMois(1) }
+                .labelStyle(.iconOnly)
+                .disabled(Periodes.mois(contenant: date).inclut(.now))
         }
     }
 

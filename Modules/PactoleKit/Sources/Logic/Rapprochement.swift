@@ -68,8 +68,8 @@ enum Rapprochement {
 
     /// Tiers dont un crédit a été retenu comme « Salaire » (reconnu aux relevés suivants).
     static var tiersSalaire: Set<String> {
-        get { Set(UserDefaults.standard.stringArray(forKey: "money.tiersSalaire") ?? []) }
-        set { UserDefaults.standard.set(newValue.sorted(), forKey: "money.tiersSalaire") }
+        get { Set(PactoleReglages.defaults.stringArray(forKey: "money.tiersSalaire") ?? []) }
+        set { PactoleReglages.defaults.set(newValue.sorted(), forKey: "money.tiersSalaire") }
     }
 
     // MARK: Préparation (rien n'est modifié)

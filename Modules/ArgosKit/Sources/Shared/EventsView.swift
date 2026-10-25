@@ -71,12 +71,9 @@ struct EventsView: View {
             .egideRow()
         }
         .egideList()
-        .egideTitre("Historique")
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button("Actualiser", systemImage: "arrow.clockwise") { Task { await load() } }
-                    .help("Recharger l'historique")
-            }
+        .egideTitre("Historique") {
+            Button("Actualiser", systemImage: "arrow.clockwise") { Task { await load() } }
+                .help("Recharger l'historique")
         }
         .task { await load() }
         .refreshable { await load() }

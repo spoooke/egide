@@ -42,11 +42,8 @@ struct FraisFixesView: View {
             .egideRow()
         }
         .egideList()
-        .egideTitre("Frais fixes")
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button("Ajouter", systemImage: "plus") { nouveau = true }
-            }
+        .egideTitre("Frais fixes") {
+            Button("Ajouter", systemImage: "plus") { nouveau = true }
         }
         .sheet(item: $edition) { FraisFixeForm(frais: $0) }
         .sheet(isPresented: $nouveau) { FraisFixeForm(frais: nil) }

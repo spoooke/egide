@@ -120,17 +120,28 @@ public struct EgideButtonStyle: ButtonStyle {
     public init(principal: Bool = true) { self.principal = principal }
 
     public func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.body.weight(.semibold))
-            .foregroundStyle(principal ? Color.white : EgideTheme.bleu)
-            .padding(.horizontal, 20)
-            .padding(.vertical, 12)
-            .frame(maxWidth: .infinity)
-            .background(principal ? EgideTheme.bleu : EgideTheme.carte, in: .capsule)
-            .overlay(Capsule().stroke(EgideTheme.contour))
-            .shadow(color: EgideTheme.ombre, radius: 8, y: 3)
-            .opacity(configuration.isPressed ? 0.75 : 1)
-            .scaleEffect(configuration.isPressed ? 0.98 : 1)
+        StyledLabel(configuration: configuration, principal: principal)
+    }
+
+    // The enabled state is only readable from a view's environment, not from the configuration.
+    private struct StyledLabel: View {
+        let configuration: Configuration
+        let principal: Bool
+        @Environment(\.isEnabled) private var isEnabled
+
+        var body: some View {
+            configuration.label
+                .font(.body.weight(.semibold))
+                .foregroundStyle(principal ? Color.white : EgideTheme.bleu)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+                .frame(maxWidth: .infinity)
+                .background(principal ? EgideTheme.bleu : EgideTheme.carte, in: .capsule)
+                .overlay(Capsule().stroke(EgideTheme.contour))
+                .shadow(color: EgideTheme.ombre, radius: 8, y: 3)
+                .opacity(isEnabled ? (configuration.isPressed ? 0.75 : 1) : 0.4)
+                .scaleEffect(configuration.isPressed ? 0.98 : 1)
+        }
     }
 }
 
