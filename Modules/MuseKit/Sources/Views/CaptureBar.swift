@@ -27,8 +27,10 @@ struct CaptureBar: View {
                 .submitLabel(.done)
                 .padding(.horizontal, 14)
                 .padding(.vertical, 10)
-                .background(EgideTheme.carte, in: .rect(cornerRadius: 20))
-                .overlay(RoundedRectangle(cornerRadius: 20).stroke(EgideTheme.contour))
+                .background(EgideTheme.carte, in: EgideTheme.forme(rayon: 20))
+                .overlay(EgideTheme.forme(rayon: 20).stroke(EgideTheme.contour))
+                // macOS: Return submits instead of inserting a newline.
+                .onSubmit(save)
                 .onChange(of: text) { _, newValue in
                     // Champ multiligne : Retour insère « \n », on l'intercepte pour enregistrer.
                     if newValue.contains("\n") {

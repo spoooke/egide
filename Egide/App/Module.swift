@@ -1,3 +1,4 @@
+import EgideUI
 import SwiftUI
 import ArgosKit
 import HermesKit
@@ -41,7 +42,8 @@ enum Module: String, CaseIterable, Identifiable, Codable {
     }
 
     /// Icône de l'app de l'outil (Assets : Icone-<module>, scripts/make-module-icons.swift), sur l'écran d'accueil.
-    var iconName: String { "Icone-\(rawValue)" }
+    /// Night City has its own set (scripts/make-night-city-icons.swift).
+    var iconName: String { EgideTheme.palette == .nightCity ? "Icone-\(rawValue)-nuit" : "Icone-\(rawValue)" }
 
     /// Une ligne sous la tuile de l'Accueil (nil : rien à afficher).
     @MainActor

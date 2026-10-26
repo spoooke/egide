@@ -1,5 +1,6 @@
 import CerbereKit
 import HephaistosKit
+import EgideUI
 import SwiftUI
 
 /// Égide sur le Mac : une fenêtre, un onglet par outil, et une seule icône dans la barre des menus
@@ -12,19 +13,33 @@ struct EgideMacApp: App {
         Window("Égide", id: "main") {
             FenetreEgide(etat: etat)
                 .frame(minWidth: 980, minHeight: 640)
+                .egideApparence()
         }
         .windowStyle(.hiddenTitleBar)
         .defaultSize(width: 1180, height: 780)
 
         // Audits en cours (app, outil, iPhone) et leur journal en direct, ouvert depuis l'onglet Cerbère.
         Window("Travail en cours", id: "travail") {
-            VueTravail().frame(minWidth: 760, minHeight: 460)
+            VueTravail().frame(minWidth: 760, minHeight: 460).egideApparence()
         }
         .defaultSize(width: 980, height: 640)
         .keyboardShortcut("j")
 
+        Settings {
+            Form {
+                EgideChoixPalette()
+                Text("Night City : fond noir, jaune néon et cyan, angles coupés, toujours en mode sombre. Vaut aussi pour Cerbère, Héphaïstos et Pactole sur ce Mac.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+            .formStyle(.grouped)
+            .scrollDisabled(true)
+            .frame(width: 420, height: 170)
+            .egideApparence()
+        }
+
         MenuBarExtra {
-            BarreDesMenus(etat: etat)
+            BarreDesMenus(etat: etat).egideMenuBar()
         } label: {
             Image(nsImage: IconeBarre.image)
                 .accessibilityLabel("Égide, température du Mac : \(etat.hephaistos.texte)")

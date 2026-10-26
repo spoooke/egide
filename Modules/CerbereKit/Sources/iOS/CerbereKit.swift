@@ -157,7 +157,7 @@ public struct CerbereRootView: View {
             Button {
                 Task { await envoyer(cible) }
             } label: {
-                Label(envoi ? "Envoi…" : "Envoyer au Mac", systemImage: "paperplane.fill").frame(maxWidth: .infinity).foregroundStyle(.white)
+                Label(envoi ? "Envoi…" : "Envoyer au Mac", systemImage: "paperplane.fill").frame(maxWidth: .infinity).foregroundStyle(EgideTheme.surBleu)
             }
             .buttonStyle(.borderedProminent)
             .disabled(envoi)

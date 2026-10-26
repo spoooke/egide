@@ -80,10 +80,9 @@ install() {
   ask_yes "Installer l'agent Argos (surveillance de la sécurité de ce PC) ?" o || exit 0
 
   step "Tailscale"
-  if ! command -v tailscale >/dev/null; then
-    info "Installation de Tailscale (installateur officiel)"
-    curl -fsSL https://tailscale.com/install.sh | sh
-  fi
+  # No remote installer run as root from here: Tailscale comes from its official package, installed by the user.
+  command -v tailscale >/dev/null || die "Tailscale est nécessaire. Installe-le en suivant https://tailscale.com/download/linux,
+  puis relance ce script."
   if ! tailscale status >/dev/null 2>&1; then
     info "Connexion à Tailscale : ouvre le lien affiché et connecte-toi avec le même compte que le Mac."
     tailscale up

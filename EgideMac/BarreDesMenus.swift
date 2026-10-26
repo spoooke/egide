@@ -29,6 +29,9 @@ struct BarreDesMenus: View {
                     Button { ouvrir(onglet) } label: { Image(systemName: onglet.symbole) }
                         .help(onglet.titre)
                 }
+            }
+            // On their own row: next to the nine tools they were squeezed down to « … ».
+            HStack {
                 Spacer()
                 Button("Ouvrir Égide") { ouvrir(.accueil) }.buttonStyle(.borderedProminent)
                 Button("Quitter") { NSApplication.shared.terminate(nil) }

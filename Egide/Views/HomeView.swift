@@ -102,8 +102,8 @@ struct HomeView: View {
             .padding(.vertical, 12)
         }
         .scrollIndicators(.hidden)
-        .background(EgideTheme.carte, in: .rect(cornerRadius: 22, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).stroke(EgideTheme.contour))
+        .background(EgideTheme.carte, in: EgideTheme.forme(rayon: 22))
+        .overlay(EgideTheme.forme(rayon: 22).stroke(EgideTheme.contour))
         .shadow(color: EgideTheme.ombre, radius: 12, y: 4)
     }
 

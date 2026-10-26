@@ -1,3 +1,5 @@
 # Internal plan and pre-merge checklist: kept in the repo, left out of the public copy (scripts/publier.sh).
 docs/refonte.md export-ignore
 docs/tests-avant-fusion.md export-ignore
+# Cerbère's tests hold fake malware and injection samples: kept in the repo and the Cerbere showcase, left out of the public copy.
+Modules/CerbereKit/Tests export-ignore

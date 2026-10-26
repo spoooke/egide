@@ -37,6 +37,15 @@ struct SettingsView: View {
             .egideRow()
 
             Section {
+                EgideChoixPalette()
+            } header: {
+                Text("Apparence")
+            } footer: {
+                Text("Night City : fond noir, jaune néon et cyan, angles coupés. Toujours en mode sombre.")
+            }
+            .egideRow()
+
+            Section {
                 Button("Tout sauvegarder", systemImage: "square.and.arrow.up") {
                     do {
                         exportDocument = GlobalBackupDocument(data: try GlobalBackup.make(layout: layout).encoded())

@@ -2,6 +2,7 @@ import ArgosKit
 import CerbereKit
 import HephaistosKit
 import MnemosyneKit
+import EgideUI
 import SwiftUI
 import UserNotifications
 
@@ -23,6 +24,7 @@ struct EgideApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                .egideApparence()
         }
     }
 }

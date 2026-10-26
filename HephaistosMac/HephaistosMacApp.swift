@@ -1,5 +1,5 @@
 import HephaistosKit
-import ServiceManagement
+import EgideUI
 import SwiftUI
 
 /// Héphaïstos : la température du Mac dans la barre des menus, le détail dans la fenêtre qui s'ouvre au clic.
@@ -16,16 +16,11 @@ struct HephaistosMacApp: App {
         self.modele = modele
         self.notifications = notifications
         if modele.reglagesAlerte.active || modele.reglagesRessources.memoire || modele.reglagesRessources.disque { Task { await notifications.verifier() } }
-        // Au premier lancement, l'app s'inscrit à l'ouverture de session (réglable ensuite dans la fenêtre).
-        if !UserDefaults.standard.bool(forKey: "hephaistos.ouvertureInscrite") {
-            UserDefaults.standard.set(true, forKey: "hephaistos.ouvertureInscrite")
-            try? SMAppService.mainApp.register()
-        }
     }
 
     var body: some Scene {
         MenuBarExtra {
-            Panneau(modele: modele, notifications: notifications)
+            Panneau(modele: modele, notifications: notifications).egideMenuBar()
         } label: {
             Etiquette(modele: modele)
         }

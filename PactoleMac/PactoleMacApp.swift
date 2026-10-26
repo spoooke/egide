@@ -1,4 +1,5 @@
 import PactoleKit
+import EgideUI
 import SwiftUI
 
 /// Pactole (nom de code : Money) sur le Mac : même onglet que dans Égide sur l'iPhone, dans une fenêtre,
@@ -14,6 +15,7 @@ struct PactoleMacApp: App {
                 .frame(minWidth: 440, minHeight: 640)
                 // « Ouvrir avec › Pactole » ou PDF glissé sur l'icône : saisie pré-remplie.
                 .onOpenURL { PactoleKit.recevoirRecu($0) }
+                .egideApparence()
         }
 
         MenuBarExtra {
@@ -21,6 +23,7 @@ struct PactoleMacApp: App {
                 openWindow(id: "main")
                 NSApplication.shared.activate()
             }
+            .egideMenuBar()
         } label: {
             PactoleMenuBarLabel()
         }

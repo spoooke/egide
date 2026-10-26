@@ -366,6 +366,7 @@ targets:
       # Tests/Windows : essais lancés sur le PC (scripts/essais-cerbere-windows.ps1).
       - path: Modules/CerbereKit/Tests
         excludes: ["Windows/**"]
+        optional: true # absent from the public copy (.gitattributes)
     dependencies: [{ target: CerbereKit }]
   # Outil en ligne de commande : les sources du module sont compilées dedans (un seul fichier à installer).
   cerbere:

@@ -17,7 +17,9 @@ fi
 
 # Relais : « cerbere --relais », lancé à l'ouverture de session. Il attend les audits demandés depuis Égide sur
 # l'iPhone, par le serveur Argos de ce Mac (127.0.0.1). Sans Argos installé, il ne fait rien.
+#   scripts/install-cerbere.sh --relais      : tool and relay, no question asked.
 #   scripts/install-cerbere.sh --sans-relais : l'outil seul, et le relais est retiré s'il était installé.
+# With no option, an installed relay is kept; otherwise it is only added after the user answers yes.
 LABEL=com.spoooke.cerbere.relais
 PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"
 launchctl bootout "gui/$UID/$LABEL" 2>/dev/null || true
@@ -25,6 +27,14 @@ if [[ "${1:-}" == "--sans-relais" ]]; then
   rm -f "$PLIST"
   echo "Relais retiré : les audits demandés depuis l'iPhone attendront."
   exit 0
+fi
+if [[ ! -f $PLIST && "${1:-}" != "--relais" ]]; then
+  reponse=""
+  [[ -t 0 ]] && { read "reponse?Lancer aussi le relais à chaque ouverture de session (audits demandés depuis l'iPhone) ? [o/N] " || true; }
+  if [[ $reponse != [oOyY]* ]]; then
+    echo "Relais non installé (scripts/install-cerbere.sh --relais pour l'ajouter)."
+    exit 0
+  fi
 fi
 mkdir -p "$HOME/Library/LaunchAgents" "$HOME/Library/Logs/Cerbere"
 cat > "$PLIST" <<PLIST_FIN

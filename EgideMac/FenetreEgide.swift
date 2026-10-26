@@ -100,8 +100,8 @@ private struct Colonne: View {
         }
         .frame(width: 58)
         .frame(maxHeight: .infinity)
-        .background(EgideTheme.carte, in: .rect(cornerRadius: 22, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).stroke(EgideTheme.contour))
+        .background(EgideTheme.carte, in: EgideTheme.forme(rayon: 22))
+        .overlay(EgideTheme.forme(rayon: 22).stroke(EgideTheme.contour))
         .shadow(color: EgideTheme.ombre, radius: 12, y: 4)
     }
 
@@ -109,9 +109,9 @@ private struct Colonne: View {
         let choisi = o == onglet
         return Image(systemName: o.symbole)
             .font(.system(size: 15, weight: choisi ? .semibold : .regular))
-            .foregroundStyle(choisi ? .white : EgideTheme.encre.opacity(0.6))
+            .foregroundStyle(choisi ? EgideTheme.surBleu : EgideTheme.encre.opacity(0.6))
             .frame(width: 38, height: 38)
-            .background(choisi ? EgideTheme.bleu : .clear, in: .circle)
-            .contentShape(.circle)
+            .background(choisi ? EgideTheme.bleu : .clear, in: EgideTheme.formeRonde)
+            .contentShape(EgideTheme.formeRonde)
     }
 }

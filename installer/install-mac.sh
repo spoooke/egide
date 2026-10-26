@@ -69,11 +69,9 @@ prerequisites() {
   fi
   info "Xcode et certificat de signature : OK"
 
-  if ! command -v brew >/dev/null; then
-    info "Installation de Homebrew (installateur officiel, ton mot de passe sera demandé)"
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-  fi
+  # Homebrew's installer is a remote script: the user runs it, never this script.
+  command -v brew >/dev/null || die "Homebrew est nécessaire (gh, XcodeGen, Go, Tailscale). Installe-le en suivant
+  https://brew.sh, puis relance ce script."
   local tools=()
   for t in gh xcodegen go; do command -v $t >/dev/null || tools+=($t); done
   (( ${#tools} )) && { info "Installation de ${tools[*]}"; brew install --quiet ${tools[@]}; }
@@ -200,7 +198,8 @@ install_hephaistos() {
   step "Héphaïstos (app Mac)"
   fetch_repo Egide
   "$(repo_dir Egide)/scripts/install-hephaistos-mac.sh" >/dev/null
-  info "Héphaïstos installée dans ~/Applications : température dans la barre des menus, lancée à l'ouverture de session.
+  info "Héphaïstos installée dans ~/Applications : température dans la barre des menus.
+  Pour la lancer à l'ouverture de session : clic sur la température > Alertes et réglages > « Lancer à l'ouverture de session ».
   Avec Argos sur ce Mac, elle apparaît aussi dans Égide > Héphaïstos sur l'iPhone."
 }
 

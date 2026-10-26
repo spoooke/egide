@@ -32,8 +32,8 @@ public extension View {
     /// Carte blanche aux coins arrondis, contour fin et ombre légère.
     func egideCard(padding: CGFloat? = 14, cornerRadius: CGFloat = EgideTheme.rayonCarte) -> some View {
         self.padding(padding.map { EdgeInsets(top: $0, leading: $0, bottom: $0, trailing: $0) } ?? EdgeInsets())
-            .background(EgideTheme.carte, in: .rect(cornerRadius: cornerRadius, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous).stroke(EgideTheme.contour))
+            .background(EgideTheme.carte, in: EgideTheme.forme(rayon: cornerRadius))
+            .overlay(EgideTheme.forme(rayon: cornerRadius).stroke(EgideTheme.contour))
             .shadow(color: EgideTheme.ombre, radius: 10, y: 4)
     }
 
@@ -107,8 +107,8 @@ public struct EgideRoundButtonStyle: ButtonStyle {
             .font(.title3)
             .foregroundStyle(EgideTheme.bleu)
             .frame(width: 40, height: 40)
-            .background(EgideTheme.carte.opacity(0.85), in: .circle)
-            .overlay(Circle().stroke(EgideTheme.contour))
+            .background(EgideTheme.carte.opacity(0.85), in: EgideTheme.formeRonde)
+            .overlay(EgideTheme.formeRonde.stroke(EgideTheme.contour))
             .opacity(configuration.isPressed ? 0.6 : 1)
     }
 }
@@ -132,12 +132,12 @@ public struct EgideButtonStyle: ButtonStyle {
         var body: some View {
             configuration.label
                 .font(.body.weight(.semibold))
-                .foregroundStyle(principal ? Color.white : EgideTheme.bleu)
+                .foregroundStyle(principal ? EgideTheme.surBleu : EgideTheme.bleu)
                 .padding(.horizontal, 20)
                 .padding(.vertical, 12)
                 .frame(maxWidth: .infinity)
-                .background(principal ? EgideTheme.bleu : EgideTheme.carte, in: .capsule)
-                .overlay(Capsule().stroke(EgideTheme.contour))
+                .background(principal ? EgideTheme.bleu : EgideTheme.carte, in: EgideTheme.formeBouton)
+                .overlay(EgideTheme.formeBouton.stroke(EgideTheme.contour))
                 .shadow(color: EgideTheme.ombre, radius: 8, y: 3)
                 .opacity(isEnabled ? (configuration.isPressed ? 0.75 : 1) : 0.4)
                 .scaleEffect(configuration.isPressed ? 0.98 : 1)

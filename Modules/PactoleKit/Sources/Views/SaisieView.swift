@@ -78,8 +78,8 @@ struct SaisieView: View {
                                         .lineLimit(1)
                                         .minimumScaleFactor(0.75)
                                         .frame(maxWidth: .infinity, minHeight: 40)
-                                        .foregroundStyle(choisi ? Color.white : Color.primary)
-                                        .background(choisi ? Color.accentColor : Color.secondary.opacity(0.15), in: .capsule)
+                                        .foregroundStyle(choisi ? EgideTheme.surBleu : Color.primary)
+                                        .background(choisi ? EgideTheme.bleu : Color.secondary.opacity(0.15), in: EgideTheme.formeBouton)
                                 }
                                 .buttonStyle(.plain)
                                 .accessibilityAddTraits(choisi ? .isSelected : [])

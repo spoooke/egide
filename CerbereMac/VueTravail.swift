@@ -86,8 +86,8 @@ struct VueTravail: View {
                     .padding(12)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .background(EgideTheme.carte, in: .rect(cornerRadius: EgideTheme.rayonCarte, style: .continuous))
-                .overlay(RoundedRectangle(cornerRadius: EgideTheme.rayonCarte, style: .continuous).stroke(EgideTheme.contour))
+                .background(EgideTheme.carte, in: EgideTheme.forme())
+                .overlay(EgideTheme.forme().stroke(EgideTheme.contour))
                 .onChange(of: j.lignes.count) { if suivreLaFin { defilement.scrollTo("fin", anchor: .bottom) } }
                 .onChange(of: j.id) { defilement.scrollTo("fin", anchor: .bottom) }
                 .onAppear { defilement.scrollTo("fin", anchor: .bottom) }
